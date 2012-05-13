@@ -16,14 +16,12 @@
 
     
 
-    Step 2: Copy YahooMailService.java to your project
+    Step 2: Copy YahooMailService.java to your project & set username/password
 
     code: https://github.com/intesar/YahooMailJava/blob/master/src/main/java/com/bia/yahoomailjava/YahooMailService.java
 
 
-    Step 3: Set username, password in YahooMailService.java 
-
-    Step 4: Sample code
+   Sample code
 
       YahooMailService emailService = YahooMailService.getInstance();
       emailService.sendEmail("<toemail>", "<subject>", "<body>");
