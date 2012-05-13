@@ -31,8 +31,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 public class YahooMailService {
 
     // set username/password and get started
-    private static final String USERNAME = "intesar@ymail.com";
-    private static final String PASSWORD = "Faraz12 3";
+    private static final String USERNAME = "<yahoo email>";
+    private static final String PASSWORD = "<yahoo password>";
     //private static String EMAIL_CONTENT_TYPE = "text/html";
     //private static Logger logger = Logger.getLogger(YahooMailService.class);
     private static final YahooMailService instance = new YahooMailService();
