@@ -25,8 +25,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 /**
  *
- * @author intesar mohammed 
- * mdshannan@gmail.com
+ * @author intesar mohammed mdshannan@gmail.com
  */
 public class YahooMailService {
 
@@ -51,7 +50,7 @@ public class YahooMailService {
      *
      * @param toAddress mandatory
      * @param subject mandatory
-     * @param body  optional
+     * @param body optional
      * @return true email send, false invalid input
      */
     public boolean sendEmail(String toAddress, String subject, String body) {
@@ -78,7 +77,7 @@ public class YahooMailService {
         if (!isValidEmail(toAddresses) || !isValidSubject(subject)) {
             return false;
         }
-        
+
         // Aysnc send email
         Runnable emailServiceAsync = new EmailServiceAsync(toAddresses, subject, body);
         executor.schedule(emailServiceAsync, 1, TimeUnit.MILLISECONDS);
@@ -93,7 +92,7 @@ public class YahooMailService {
      * @return
      */
     private boolean isValidEmail(String... emails) {
-        if ( emails == null ) {
+        if (emails == null) {
             return false;
         }
         for (String email : emails) {
@@ -105,9 +104,9 @@ public class YahooMailService {
     }
 
     /**
-     * 
+     *
      * @param subject
-     * @return 
+     * @return
      */
     private boolean isValidSubject(String subject) {
         if (subject == null || subject.trim().length() == 0) {
@@ -212,7 +211,7 @@ public class YahooMailService {
      * @param addressTo
      * @param subject
      * @param message
-     * 
+     *
      */
     private void send(InternetAddress[] addressTo, String subject, String message) {
         try {
@@ -226,5 +225,29 @@ public class YahooMailService {
             //logger.warn(ex.getMessage(), ex);
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     *
+     * @throws Throwable
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            // releasing executor
+            this.executor.shutdown();
+            // logger.trace("EmailService executor released!");
+            System.out.println("EmailService exector released!");
+        } finally {
+            super.finalize();
+        }
+    }
+    
+    /**
+     *  call this method from ServletContextListener.contextDestroyed()
+     *  This will release all work thread's when your app is undeployed
+     */
+    public void shutdown() {
+        this.executor.shutdown();
     }
 }
