@@ -19,8 +19,10 @@ import java.util.Properties;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.mail.*;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
@@ -37,10 +39,14 @@ public class YahooMailService {
     private static final YahooMailService instance = new YahooMailService();
     private ScheduledThreadPoolExecutor executor;
 
+    
+    private Session session;
+    // If require enable it
+    private InternetAddress[] bcc;
+    
     private YahooMailService() {
         executor = new ScheduledThreadPoolExecutor(2);
     }
-    private Session session;
 
     public static YahooMailService getInstance() {
         return instance;
@@ -109,10 +115,7 @@ public class YahooMailService {
      * @return
      */
     private boolean isValidSubject(String subject) {
-        if (subject == null || subject.trim().length() == 0) {
-            return false;
-        }
-        return true;
+        return !GenericValidator.isBlankOrNull(subject);
     }
 
     /*
@@ -171,14 +174,14 @@ public class YahooMailService {
      * @return
      * @throws AddressException
      */
-//    private InternetAddress[] getBCC() throws AddressException {
-//        if (bcc != null) {
-//            return bcc;
-//        }
-//        bcc = new InternetAddress[1];
-//        bcc[0] = new InternetAddress("example@yahoo.com");
-//        return bcc;
-//    }
+    private InternetAddress[] getBCC() throws AddressException {
+        if (bcc != null) {
+            return bcc;
+        }
+        bcc = new InternetAddress[1];
+        bcc[0] = new InternetAddress("example@yahoo.com");
+        return bcc;
+    }
     /**
      *
      * @param recipients
